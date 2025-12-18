@@ -1,94 +1,103 @@
-const questionario = document.getElementById("questionario");
-const punicao = document.getElementById("punicao");
-const missoes = document.getElementById("missoes");
-const timerEl = document.getElementById("timer");
+let data = JSON.parse(localStorage.getItem("solo")) || {
+  iniciado: false,
+  nivelFisico: 1,
+  xp: 0,
+  level: 1,
+  ultimoDia: Date.now(),
+  punição: false
+};
 
-function salvarQuestionario() {
+function salvar() {
+  localStorage.setItem("solo", JSON.stringify(data));
+}
+
+function iniciarSistema() {
   const atividade = document.getElementById("atividade").value;
   if (!atividade) return alert("Preencha tudo.");
 
-  localStorage.setItem("nivel", atividade);
-  iniciarDia();
+  data.iniciado = true;
+  data.nivelFisico = Number(atividade);
+  data.ultimoDia = Date.now();
+  salvar();
+  carregar();
 }
 
-function iniciarDia() {
-  const ultimoDia = localStorage.getItem("ultimoDia");
-  const agora = Date.now();
+function carregar() {
+  document.getElementById("level").innerText = data.level;
+  document.getElementById("xp").innerText = data.xp;
 
-  if (!ultimoDia || agora - ultimoDia > 86400000) {
-    localStorage.setItem("ultimoDia", agora);
-    localStorage.setItem("completo", "false");
+  if (!data.iniciado) {
+    mostrar("questionario");
+    return;
   }
 
-  checarPunicao();
-  atualizarTela();
+  if (data.punição) {
+    ativarPunicao();
+  } else {
+    mostrar("missoes");
+  }
+
   iniciarTimer();
 }
 
-function checarPunicao() {
-  if (localStorage.getItem("completo") === "false") {
-    gerarPunicao();
-  }
-}
-
-function gerarPunicao() {
-  const nivel = Number(localStorage.getItem("nivel"));
-  const lista = document.getElementById("listaPunicao");
-  lista.innerHTML = "";
-
-  let reps = nivel * 10;
-
-  ["Flexões", "Abdominais", "Agachamentos"].forEach(e => {
-    const li = document.createElement("li");
-    li.innerText = `${reps} ${e}`;
-    lista.appendChild(li);
-  });
-
-  punicao.classList.remove("hidden");
-  missoes.classList.add("hidden");
-}
-
-function concluirPunicao() {
-  localStorage.setItem("completo", "true");
-  punicao.classList.add("hidden");
-  missoes.classList.remove("hidden");
+function mostrar(id) {
+  ["questionario", "punicao", "missoes"].forEach(s =>
+    document.getElementById(s).classList.add("hidden")
+  );
+  document.getElementById(id).classList.remove("hidden");
 }
 
 function finalizarDia() {
-  const checks = document.querySelectorAll(".missao");
-  const feitas = [...checks].filter(c => c.checked).length;
+  const miss = document.querySelectorAll(".missao");
+  const feitas = [...miss].filter(m => m.checked).length;
 
-  if (feitas < checks.length) {
-    alert("Missões incompletas. Punição amanhã.");
-    localStorage.setItem("completo", "false");
+  if (feitas < miss.length) {
+    data.punição = true;
   } else {
-    alert("Dia concluído. Sistema satisfeito.");
-    localStorage.setItem("completo", "true");
+    data.xp += 20;
+    if (data.xp >= 100) {
+      data.xp = 0;
+      data.level++;
+    }
   }
 
-  localStorage.setItem("ultimoDia", Date.now());
+  data.ultimoDia = Date.now();
+  salvar();
+  location.reload();
 }
 
-function atualizarTela() {
-  questionario.classList.add("hidden");
-  missoes.classList.remove("hidden");
+function ativarPunicao() {
+  mostrar("punicao");
+  const ul = document.getElementById("listaPunicao");
+  ul.innerHTML = "";
+  let reps = data.nivelFisico * 10;
+
+  ["Flexões", "Abdominais", "Agachamentos"].forEach(e => {
+    let li = document.createElement("li");
+    li.innerText = `${reps} ${e}`;
+    ul.appendChild(li);
+  });
+}
+
+function concluirPunicao() {
+  data.punição = false;
+  data.xp += 5;
+  salvar();
+  location.reload();
 }
 
 function iniciarTimer() {
   setInterval(() => {
-    const ultimo = Number(localStorage.getItem("ultimoDia"));
-    const restante = 86400000 - (Date.now() - ultimo);
-
+    let restante = 86400000 - (Date.now() - data.ultimoDia);
     if (restante <= 0) {
+      data.punição = true;
+      salvar();
       location.reload();
     }
-
-    const h = Math.floor(restante / 3600000);
-    const m = Math.floor((restante % 3600000) / 60000);
-    timerEl.innerText = `⏳ Tempo restante: ${h}h ${m}m`;
+    let h = Math.floor(restante / 3600000);
+    let m = Math.floor((restante % 3600000) / 60000);
+    document.getElementById("timer").innerText = `${h}h ${m}m`;
   }, 60000);
 }
 
-window.onload = () => {
-  if (localStorage.getItem("nivel")) iniciarDia();
-};
+window.onload = carregar;

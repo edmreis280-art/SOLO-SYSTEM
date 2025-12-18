@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Solo System</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="app">
+
+  <!-- QUESTIONÁRIO -->
+  <section id="questionario">
+    <h1>⚔️ SOLO SYSTEM</h1>
+    <p>O Sistema precisa entender o portador.</p>
+
+    <input id="peso" type="number" placeholder="Peso (kg)">
+    <input id="altura" type="number" placeholder="Altura (cm)">
+
+    <select id="atividade">
+      <option value="">Nível de treino</option>
+      <option value="1">Sedentário</option>
+      <option value="2">Treino leve</option>
+      <option value="3">Academia frequente</option>
+    </select>
+
+    <button onclick="salvarQuestionario()">Iniciar Sistema</button>
+  </section>
+
+  <!-- PUNIÇÃO -->
+  <section id="punicao" class="hidden">
+    <h2>⚠️ PUNIÇÃO ATIVADA</h2>
+    <p>Complete para desbloquear o Sistema:</p>
+
+    <ul id="listaPunicao"></ul>
+
+    <button onclick="concluirPunicao()">Concluir Punição</button>
+  </section>
+
+  <!-- MISSÕES -->
+  <section id="missoes" class="hidden">
+    <h2>📜 Missões Diárias</h2>
+
+    <label><input type="checkbox" class="missao"> 50 Flexões</label>
+    <label><input type="checkbox" class="missao"> 60 Abdominais</label>
+    <label><input type="checkbox" class="missao"> 100 Agachamentos</label>
+    <label><input type="checkbox" class="missao"> Lavar rosto manhã/noite</label>
+    <label><input type="checkbox" class="missao"> Beber 2L de água</label>
+
+    <button onclick="finalizarDia()">Finalizar Dia</button>
+
+    <p id="timer"></p>
+  </section>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

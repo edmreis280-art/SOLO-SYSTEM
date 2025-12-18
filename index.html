@@ -152,4 +152,74 @@ let d=JSON.parse(localStorage.getItem("solo"))||{
 
 function save(){localStorage.setItem("solo",JSON.stringify(d))}
 
-fu
+function show(id){
+  ["questionario","punicao","missoes"].forEach(s=>{
+    document.getElementById(s).classList.add("hidden")
+  });
+  document.getElementById(id).classList.remove("hidden");
+}
+
+function start(){
+  let a=document.getElementById("atividade").value;
+  if(!a)return alert("Selecione o nível físico");
+  d.started=true;
+  d.phys=Number(a);
+  d.last=Date.now();
+  save();load();
+}
+
+function load(){
+  document.getElementById("level").innerText=d.level;
+  document.getElementById("xp").innerText=d.xp;
+
+  if(!d.started)return show("questionario");
+  if(d.punish)punishment();
+  else show("missoes");
+
+  timer();
+}
+
+function punishment(){
+  show("punicao");
+  let ul=document.getElementById("listaPunicao");
+  ul.innerHTML="";
+  let r=d.phys*10;
+  ["Flexões","Abdominais","Agachamentos"].forEach(e=>{
+    let li=document.createElement("li");
+    li.textContent=`${r} ${e}`;
+    ul.appendChild(li);
+  });
+}
+
+function endPunishment(){
+  d.punish=false;
+  d.xp+=5;
+  save();location.reload();
+}
+
+function finishDay(){
+  let m=[...document.querySelectorAll(".m")];
+  if(m.some(x=>!x.checked))d.punish=true;
+  else{
+    d.xp+=20;
+    if(d.xp>=100){d.xp=0;d.level++}
+  }
+  d.last=Date.now();
+  save();location.reload();
+}
+
+function timer(){
+  setInterval(()=>{
+    let r=86400000-(Date.now()-d.last);
+    if(r<=0){d.punish=true;save();location.reload()}
+    let h=Math.floor(r/3600000);
+    let m=Math.floor((r%3600000)/60000);
+    document.getElementById("timer").innerText=`${h}h ${m}m`;
+  },60000);
+}
+
+window.onload=load;
+</script>
+
+</body>
+</html>

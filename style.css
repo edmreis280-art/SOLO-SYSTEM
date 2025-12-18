@@ -1,29 +1,40 @@
 body {
-  background: #0a0a0a;
+  margin: 0;
+  background: radial-gradient(circle at top, #0b1d2a, #000);
   color: #e0f2ff;
-  font-family: Arial, sans-serif;
+  font-family: "Segoe UI", sans-serif;
+}
+
+#hud {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px;
+  background: rgba(0,0,0,0.7);
+  border-bottom: 1px solid #1e90ff;
 }
 
 #app {
-  max-width: 400px;
+  max-width: 420px;
   margin: auto;
   padding: 20px;
 }
 
 h1, h2 {
   text-align: center;
+  color: #6ecbff;
 }
 
 input, select, button {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   margin: 8px 0;
-  border-radius: 6px;
+  border-radius: 8px;
   border: none;
+  font-size: 14px;
 }
 
 button {
-  background: #1e90ff;
+  background: linear-gradient(90deg, #1e90ff, #00bfff);
   color: white;
   font-weight: bold;
   cursor: pointer;
@@ -31,9 +42,15 @@ button {
 
 label {
   display: block;
-  margin: 6px 0;
+  padding: 6px 0;
 }
 
 .hidden {
   display: none;
+}
+
+#punicao {
+  border: 1px solid red;
+  padding: 20px;
+  border-radius: 10px;
 }

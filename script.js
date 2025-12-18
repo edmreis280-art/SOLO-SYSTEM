@@ -1,46 +1,40 @@
-let data = JSON.parse(localStorage.getItem("solo")) || {
+let data = JSON.parse(localStorage.getItem("soloSystem")) || {
   iniciado: false,
-  nivelFisico: 1,
+  nivel: 1,
   xp: 0,
   level: 1,
   ultimoDia: Date.now(),
-  punição: false
+  punicao: false
 };
 
-function salvar() {
-  localStorage.setItem("solo", JSON.stringify(data));
+function save() {
+  localStorage.setItem("soloSystem", JSON.stringify(data));
 }
 
 function iniciarSistema() {
   const atividade = document.getElementById("atividade").value;
-  if (!atividade) return alert("Preencha tudo.");
+  if (!atividade) return alert("Complete o questionário.");
 
   data.iniciado = true;
-  data.nivelFisico = Number(atividade);
+  data.nivel = Number(atividade);
   data.ultimoDia = Date.now();
-  salvar();
-  carregar();
+  save();
+  load();
 }
 
-function carregar() {
+function load() {
   document.getElementById("level").innerText = data.level;
   document.getElementById("xp").innerText = data.xp;
 
-  if (!data.iniciado) {
-    mostrar("questionario");
-    return;
-  }
+  if (!data.iniciado) return show("questionario");
 
-  if (data.punição) {
-    ativarPunicao();
-  } else {
-    mostrar("missoes");
-  }
+  if (data.punicao) ativarPunicao();
+  else show("missoes");
 
-  iniciarTimer();
+  timer();
 }
 
-function mostrar(id) {
+function show(id) {
   ["questionario", "punicao", "missoes"].forEach(s =>
     document.getElementById(s).classList.add("hidden")
   );
@@ -52,7 +46,7 @@ function finalizarDia() {
   const feitas = [...miss].filter(m => m.checked).length;
 
   if (feitas < miss.length) {
-    data.punição = true;
+    data.punicao = true;
   } else {
     data.xp += 20;
     if (data.xp >= 100) {
@@ -62,42 +56,43 @@ function finalizarDia() {
   }
 
   data.ultimoDia = Date.now();
-  salvar();
+  save();
   location.reload();
 }
 
 function ativarPunicao() {
-  mostrar("punicao");
+  show("punicao");
   const ul = document.getElementById("listaPunicao");
   ul.innerHTML = "";
-  let reps = data.nivelFisico * 10;
+  const reps = data.nivel * 10;
 
   ["Flexões", "Abdominais", "Agachamentos"].forEach(e => {
-    let li = document.createElement("li");
-    li.innerText = `${reps} ${e}`;
+    const li = document.createElement("li");
+    li.textContent = `${reps} ${e}`;
     ul.appendChild(li);
   });
 }
 
 function concluirPunicao() {
-  data.punição = false;
+  data.punicao = false;
   data.xp += 5;
-  salvar();
+  save();
   location.reload();
 }
 
-function iniciarTimer() {
+function timer() {
   setInterval(() => {
-    let restante = 86400000 - (Date.now() - data.ultimoDia);
+    const restante = 86400000 - (Date.now() - data.ultimoDia);
     if (restante <= 0) {
-      data.punição = true;
-      salvar();
+      data.punicao = true;
+      save();
       location.reload();
     }
-    let h = Math.floor(restante / 3600000);
-    let m = Math.floor((restante % 3600000) / 60000);
+    const h = Math.floor(restante / 3600000);
+    const m = Math.floor((restante % 3600000) / 60000);
     document.getElementById("timer").innerText = `${h}h ${m}m`;
   }, 60000);
 }
 
-window.onload = carregar;
+window.onload = load;
+

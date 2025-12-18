@@ -7,21 +7,30 @@
 </head>
 <body>
 
-<div id="hud">
-  <div>LV <span id="level">1</span></div>
-  <div>XP <span id="xp">0</span>/100</div>
-  <div>⏳ <span id="timer"></span></div>
+<!-- HUD SUPERIOR -->
+<div class="hud">
+  <div class="hud-box">LV <span id="level">1</span></div>
+  <div class="hud-box">XP <span id="xp">0</span>/100</div>
+  <div class="hud-box">⏳ <span id="timer">24h</span></div>
 </div>
 
-<div id="app">
+<!-- STATUS -->
+<div class="status-panel">
+  <div class="stat">STR <span>10</span></div>
+  <div class="stat">VIT <span>10</span></div>
+  <div class="stat">AGI <span>10</span></div>
+  <div class="stat">PER <span>10</span></div>
+</div>
+
+<div class="container">
 
   <!-- QUESTIONÁRIO -->
-  <section id="questionario">
+  <section id="questionario" class="panel">
     <h1>⚔️ SOLO SYSTEM</h1>
-    <p>O Sistema precisa entender o portador.</p>
+    <p class="subtitle">O Sistema precisa avaliar o portador.</p>
 
-    <input id="peso" type="number" placeholder="Peso (kg)">
-    <input id="altura" type="number" placeholder="Altura (cm)">
+    <input type="number" id="peso" placeholder="Peso (kg)">
+    <input type="number" id="altura" placeholder="Altura (cm)">
 
     <select id="atividade">
       <option value="">Nível físico</option>
@@ -30,32 +39,5 @@
       <option value="3">Avançado</option>
     </select>
 
-    <button onclick="iniciarSistema()">Iniciar Sistema</button>
-  </section>
-
-  <!-- PUNIÇÃO -->
-  <section id="punicao" class="hidden">
-    <h2>⚠️ PUNIÇÃO ATIVADA</h2>
-    <p>Complete para desbloquear o Sistema:</p>
-    <ul id="listaPunicao"></ul>
-    <button onclick="concluirPunicao()">Concluir Punição</button>
-  </section>
-
-  <!-- MISSÕES -->
-  <section id="missoes" class="hidden">
-    <h2>📜 Missões Diárias</h2>
-
-    <label><input type="checkbox" class="missao"> 50 Flexões</label>
-    <label><input type="checkbox" class="missao"> 60 Abdominais</label>
-    <label><input type="checkbox" class="missao"> 100 Agachamentos</label>
-    <label><input type="checkbox" class="missao"> Lavar rosto manhã/noite</label>
-    <label><input type="checkbox" class="missao"> Beber 2L de água</label>
-
-    <button onclick="finalizarDia()">Finalizar Dia</button>
-  </section>
-
-</div>
-
-<script src="script.js"></script>
-</body>
-</html>
+    <button onclick="iniciarSistema()">INICIAR SISTEMA</button>
+  <

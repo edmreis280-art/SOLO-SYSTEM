@@ -1,56 +1,52 @@
-body {
-  margin: 0;
-  background: radial-gradient(circle at top, #0b1d2a, #000);
-  color: #e0f2ff;
-  font-family: "Segoe UI", sans-serif;
+* {
+  box-sizing: border-box;
 }
 
-#hud {
+body {
+  margin: 0;
+  background: radial-gradient(circle at top, #0b1d2a 0%, #000 60%);
+  color: #e6f4ff;
+  font-family: "Segoe UI", system-ui, sans-serif;
+}
+
+/* HUD */
+.hud {
   display: flex;
   justify-content: space-around;
-  padding: 10px;
-  background: rgba(0,0,0,0.7);
+  padding: 12px;
+  background: rgba(0,0,0,0.85);
   border-bottom: 1px solid #1e90ff;
 }
 
-#app {
+.hud-box {
+  padding: 6px 12px;
+  border: 1px solid #1e90ff;
+  border-radius: 6px;
+  box-shadow: 0 0 10px #1e90ff55;
+}
+
+/* STATUS */
+.status-panel {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px;
+}
+
+.stat {
+  padding: 8px 12px;
+  border: 1px solid #00bfff;
+  border-radius: 6px;
+  box-shadow: 0 0 12px #00bfff55;
+}
+
+/* CONTAINER */
+.container {
   max-width: 420px;
-  margin: auto;
-  padding: 20px;
+  margin: 20px auto;
+  padding: 10px;
 }
 
-h1, h2 {
-  text-align: center;
-  color: #6ecbff;
-}
-
-input, select, button {
-  width: 100%;
-  padding: 12px;
-  margin: 8px 0;
-  border-radius: 8px;
-  border: none;
-  font-size: 14px;
-}
-
-button {
-  background: linear-gradient(90deg, #1e90ff, #00bfff);
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-label {
-  display: block;
-  padding: 6px 0;
-}
-
-.hidden {
-  display: none;
-}
-
-#punicao {
-  border: 1px solid red;
-  padding: 20px;
-  border-radius: 10px;
-}
+/* PAINÉIS */
+.panel {
+  background: rgba(10,20,30,0.85);
+  border:

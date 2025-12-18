@@ -7,6 +7,12 @@
 </head>
 <body>
 
+<div id="hud">
+  <div>LV <span id="level">1</span></div>
+  <div>XP <span id="xp">0</span>/100</div>
+  <div>⏳ <span id="timer"></span></div>
+</div>
+
 <div id="app">
 
   <!-- QUESTIONÁRIO -->
@@ -18,22 +24,20 @@
     <input id="altura" type="number" placeholder="Altura (cm)">
 
     <select id="atividade">
-      <option value="">Nível de treino</option>
-      <option value="1">Sedentário</option>
-      <option value="2">Treino leve</option>
-      <option value="3">Academia frequente</option>
+      <option value="">Nível físico</option>
+      <option value="1">Iniciante</option>
+      <option value="2">Intermediário</option>
+      <option value="3">Avançado</option>
     </select>
 
-    <button onclick="salvarQuestionario()">Iniciar Sistema</button>
+    <button onclick="iniciarSistema()">Iniciar Sistema</button>
   </section>
 
   <!-- PUNIÇÃO -->
   <section id="punicao" class="hidden">
     <h2>⚠️ PUNIÇÃO ATIVADA</h2>
     <p>Complete para desbloquear o Sistema:</p>
-
     <ul id="listaPunicao"></ul>
-
     <button onclick="concluirPunicao()">Concluir Punição</button>
   </section>
 
@@ -48,8 +52,6 @@
     <label><input type="checkbox" class="missao"> Beber 2L de água</label>
 
     <button onclick="finalizarDia()">Finalizar Dia</button>
-
-    <p id="timer"></p>
   </section>
 
 </div>

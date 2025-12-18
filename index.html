@@ -1,43 +1,155 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Solo System</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>Solo System</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  min-height:100vh;
+  background:
+    radial-gradient(circle at top,#0b2a3f 0%,#000 55%),
+    linear-gradient(#000,#000);
+  color:#e6f4ff;
+  font-family:Segoe UI,system-ui,sans-serif;
+}
+
+.hud{
+  display:flex;
+  justify-content:space-between;
+  padding:12px 16px;
+  background:rgba(0,0,0,.85);
+  border-bottom:1px solid #00bfff;
+  box-shadow:0 0 20px #00bfff55;
+}
+
+.hud div{
+  border:1px solid #00bfff;
+  padding:6px 12px;
+  border-radius:6px;
+  box-shadow:0 0 10px #00bfff88;
+}
+
+.container{
+  max-width:420px;
+  margin:30px auto;
+  padding:10px;
+}
+
+.panel{
+  background:rgba(5,15,25,.9);
+  border:1px solid #00bfff;
+  border-radius:14px;
+  padding:22px;
+  box-shadow:0 0 30px #00bfff33;
+}
+
+.panel h1,.panel h2{
+  text-align:center;
+  color:#7dd3ff;
+  margin-top:0;
+}
+
+.subtitle{
+  text-align:center;
+  opacity:.75;
+}
+
+input,select,button{
+  width:100%;
+  padding:14px;
+  margin:12px 0;
+  border-radius:10px;
+  border:none;
+  font-size:15px;
+}
+
+button{
+  background:linear-gradient(90deg,#00bfff,#1e90ff);
+  color:#fff;
+  font-weight:700;
+  cursor:pointer;
+  box-shadow:0 0 25px #00bfffaa;
+}
+
+.mission{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px;
+  margin:10px 0;
+  border:1px solid #00bfff55;
+  border-radius:10px;
+  background:rgba(0,0,0,.45);
+}
+
+.danger{
+  border-color:#ff3b3b;
+  box-shadow:0 0 35px #ff3b3b55;
+}
+
+.danger button{
+  background:linear-gradient(90deg,#ff3b3b,#ff6b6b);
+  box-shadow:0 0 25px #ff3b3baa;
+}
+
+.hidden{display:none}
+</style>
 </head>
+
 <body>
 
-<!-- HUD SUPERIOR -->
 <div class="hud">
-  <div class="hud-box">LV <span id="level">1</span></div>
-  <div class="hud-box">XP <span id="xp">0</span>/100</div>
-  <div class="hud-box">⏳ <span id="timer">24h</span></div>
-</div>
-
-<!-- STATUS -->
-<div class="status-panel">
-  <div class="stat">STR <span>10</span></div>
-  <div class="stat">VIT <span>10</span></div>
-  <div class="stat">AGI <span>10</span></div>
-  <div class="stat">PER <span>10</span></div>
+  <div>LV <span id="level">1</span></div>
+  <div>XP <span id="xp">0</span>/100</div>
+  <div>⏳ <span id="timer">24h</span></div>
 </div>
 
 <div class="container">
 
-  <!-- QUESTIONÁRIO -->
-  <section id="questionario" class="panel">
-    <h1>⚔️ SOLO SYSTEM</h1>
-    <p class="subtitle">O Sistema precisa avaliar o portador.</p>
+<section id="questionario" class="panel">
+  <h1>⚔️ SOLO SYSTEM</h1>
+  <p class="subtitle">O Sistema precisa avaliar o portador.</p>
 
-    <input type="number" id="peso" placeholder="Peso (kg)">
-    <input type="number" id="altura" placeholder="Altura (cm)">
+  <select id="atividade">
+    <option value="">Nível físico</option>
+    <option value="1">Iniciante</option>
+    <option value="2">Intermediário</option>
+    <option value="3">Avançado</option>
+  </select>
 
-    <select id="atividade">
-      <option value="">Nível físico</option>
-      <option value="1">Iniciante</option>
-      <option value="2">Intermediário</option>
-      <option value="3">Avançado</option>
-    </select>
+  <button onclick="start()">INICIAR SISTEMA</button>
+</section>
 
-    <button onclick="iniciarSistema()">INICIAR SISTEMA</button>
-  <
+<section id="punicao" class="panel danger hidden">
+  <h2>⚠️ PUNIÇÃO ATIVADA</h2>
+  <p>Complete para desbloquear o Sistema:</p>
+  <ul id="listaPunicao"></ul>
+  <button onclick="endPunishment()">CONCLUIR PUNIÇÃO</button>
+</section>
+
+<section id="missoes" class="panel hidden">
+  <h2>📜 MISSÕES DIÁRIAS</h2>
+
+  <div class="mission"><input type="checkbox" class="m">50 Flexões</div>
+  <div class="mission"><input type="checkbox" class="m">60 Abdominais</div>
+  <div class="mission"><input type="checkbox" class="m">100 Agachamentos</div>
+  <div class="mission"><input type="checkbox" class="m">Lavar rosto manhã/noite</div>
+  <div class="mission"><input type="checkbox" class="m">Beber 2L de água</div>
+
+  <button onclick="finishDay()">FINALIZAR DIA</button>
+</section>
+
+</div>
+
+<script>
+let d=JSON.parse(localStorage.getItem("solo"))||{
+  started:false,level:1,xp:0,last:Date.now(),punish:false,phys:1
+};
+
+function save(){localStorage.setItem("solo",JSON.stringify(d))}
+
+fu
